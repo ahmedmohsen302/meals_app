@@ -9,14 +9,17 @@ void main() {
     MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        scaffoldBackgroundColor: kColorScheme.surfaceContainer,
         appBarTheme: AppBarTheme().copyWith(
           centerTitle: true,
-          titleTextStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          color: kColorScheme.onPrimary,
+          titleTextStyle: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            color: kColorScheme.onPrimaryContainer,
+          ),
         ),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: kColorScheme,
-          brightness: Brightness.dark,
-        ),
+        colorScheme: kColorScheme,
         textTheme: GoogleFonts.latoTextTheme(),
       ),
       home: MealsApp(),
