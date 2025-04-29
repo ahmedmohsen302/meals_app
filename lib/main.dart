@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meals_app/constants.dart';
 import 'package:meals_app/views/home_view.dart';
+import 'package:meals_app/views/tabs_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +33,6 @@ class MealsApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const HomeView();
+    return const TabsView();
   }
 }
