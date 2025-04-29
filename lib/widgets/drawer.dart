@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MainDrawer extends StatelessWidget {
-  const MainDrawer({super.key});
+  const MainDrawer({super.key, required this.onSelect});
+  final void Function(String identifier) onSelect;
 
   @override
   Widget build(BuildContext context) {
@@ -9,6 +10,7 @@ class MainDrawer extends StatelessWidget {
       child: Column(
         children: [
           DrawerHeader(
+            padding: EdgeInsets.all(44),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -44,7 +46,9 @@ class MainDrawer extends StatelessWidget {
               size: 28,
               color: Theme.of(context).colorScheme.primary,
             ),
-            onTap: () {},
+            onTap: () {
+              onSelect('Meals');
+            },
             title: Text(
               'Meals',
               style: Theme.of(context).textTheme.titleSmall!.copyWith(
@@ -60,7 +64,9 @@ class MainDrawer extends StatelessWidget {
               size: 28,
               color: Theme.of(context).colorScheme.primary,
             ),
-            onTap: () {},
+            onTap: () {
+              onSelect('Filters');
+            },
             title: Text(
               'Filters',
               style: Theme.of(context).textTheme.titleSmall!.copyWith(

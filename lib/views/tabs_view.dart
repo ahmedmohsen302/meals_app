@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/models/meals_model.dart';
+import 'package:meals_app/views/filters_view.dart';
 import 'package:meals_app/views/home_view.dart';
 import 'package:meals_app/views/meals_view.dart';
 import 'package:meals_app/widgets/drawer.dart';
@@ -42,6 +43,17 @@ class _TabsViewState extends State<TabsView> {
     });
   }
 
+  void onSelect(String idintefier) {
+    if (idintefier == 'Filters') {
+      Navigator.of(context).pop();
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (context) => FiltersView()));
+    } else if (idintefier == 'Meals') {
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget currentView = HomeView(isToggledFavourite: toggledFavouriteStatues);
@@ -55,7 +67,7 @@ class _TabsViewState extends State<TabsView> {
     }
     return Scaffold(
       appBar: AppBar(title: Text(currentTitle)),
-      drawer: MainDrawer(),
+      drawer: MainDrawer(onSelect: onSelect),
       body: currentView,
       bottomNavigationBar: BottomNavigationBar(
         onTap: selectView,
