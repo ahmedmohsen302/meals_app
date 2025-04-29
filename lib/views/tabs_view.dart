@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:meals_app/constants.dart';
+import 'package:meals_app/data/dummy_meal_data.dart';
 import 'package:meals_app/models/meals_model.dart';
 import 'package:meals_app/views/filters_view.dart';
 import 'package:meals_app/views/home_view.dart';
@@ -15,6 +17,7 @@ class TabsView extends StatefulWidget {
 class _TabsViewState extends State<TabsView> {
   int currentIndex = 0;
   final List<MealsModel> favouriteMeals = [];
+  Map<Filter, bool> selectedFilters = kInitialFilters;
 
   void toggledFavouriteStatues(MealsModel meal) {
     final isExisting = favouriteMeals.contains(meal);
@@ -43,12 +46,17 @@ class _TabsViewState extends State<TabsView> {
     });
   }
 
-  void onSelect(String idintefier) {
+  void onSelect(String idintefier) async {
     if (idintefier == 'Filters') {
       Navigator.of(context).pop();
-      Navigator.of(
-        context,
-      ).push(MaterialPageRoute(builder: (context) => FiltersView()));
+      final result = await Navigator.of(context).push<Map<Filter, bool>>(
+        MaterialPageRoute(
+          builder: (context) => FiltersView(currentFilters: selectedFilters),
+        ),
+      );
+      setState(() {
+        selectedFilters = result ?? kInitialFilters;
+      });
     } else if (idintefier == 'Meals') {
       Navigator.of(context).pop();
     }
@@ -56,7 +64,26 @@ class _TabsViewState extends State<TabsView> {
 
   @override
   Widget build(BuildContext context) {
-    Widget currentView = HomeView(isToggledFavourite: toggledFavouriteStatues);
+    final availableMeals =
+        dummyMeals.where((meal) {
+          if (selectedFilters[Filter.glutenFree]! && meal.isGlutenFree) {
+            return false;
+          }
+          if (selectedFilters[Filter.lactoseFree]! && meal.isLactoseFree) {
+            return false;
+          }
+          if (selectedFilters[Filter.vageterian]! && meal.isVegetarian) {
+            return false;
+          }
+          if (selectedFilters[Filter.vegan]! && meal.isVegan) {
+            return false;
+          }
+          return true;
+        }).toList();
+    Widget currentView = HomeView(
+      isToggledFavourite: toggledFavouriteStatues,
+      availableMeals: availableMeals,
+    );
     String currentTitle = 'Categories';
     if (currentIndex == 1) {
       currentView = MealsView(
