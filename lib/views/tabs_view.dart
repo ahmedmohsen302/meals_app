@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meals_app/models/meals_model.dart';
 import 'package:meals_app/views/home_view.dart';
 import 'package:meals_app/views/meals_view.dart';
+import 'package:meals_app/widgets/drawer.dart';
 
 class TabsView extends StatefulWidget {
   const TabsView({super.key});
@@ -54,6 +55,7 @@ class _TabsViewState extends State<TabsView> {
     }
     return Scaffold(
       appBar: AppBar(title: Text(currentTitle)),
+      drawer: MainDrawer(),
       body: currentView,
       bottomNavigationBar: BottomNavigationBar(
         onTap: selectView,
