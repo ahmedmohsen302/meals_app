@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:meals_app/data/dummy_data.dart';
 import 'package:meals_app/data/dummy_meal_data.dart';
 import 'package:meals_app/models/category_model.dart';
+import 'package:meals_app/models/meals_model.dart';
 import 'package:meals_app/views/meals_view.dart';
 import 'package:meals_app/widgets/category_item.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+  const HomeView({super.key, required this.isToggledFavourite});
+  final void Function(MealsModel meal) isToggledFavourite;
   void selectCategory(BuildContext context, CategoryModel category) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder:
             (context) => MealsView(
+              isToggledFavourite: isToggledFavourite,
               title: category.title,
               meals:
                   dummyMeals

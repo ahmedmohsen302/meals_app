@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meals_app/models/meals_model.dart';
 import 'package:meals_app/views/home_view.dart';
 import 'package:meals_app/views/meals_view.dart';
 
@@ -11,6 +12,28 @@ class TabsView extends StatefulWidget {
 
 class _TabsViewState extends State<TabsView> {
   int currentIndex = 0;
+  final List<MealsModel> favouriteMeals = [];
+
+  void toggledFavouriteStatues(MealsModel meal) {
+    final isExisting = favouriteMeals.contains(meal);
+    if (isExisting) {
+      setState(() {
+        favouriteMeals.remove(meal);
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Meal no longer favourite')));
+      });
+    } else {
+      setState(() {
+        favouriteMeals.add(meal);
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Meal added to favourites')));
+      });
+    }
+  }
 
   void selectView(int index) {
     setState(() {
@@ -20,10 +43,13 @@ class _TabsViewState extends State<TabsView> {
 
   @override
   Widget build(BuildContext context) {
-    Widget currentView = HomeView();
+    Widget currentView = HomeView(isToggledFavourite: toggledFavouriteStatues);
     String currentTitle = 'Categories';
     if (currentIndex == 1) {
-      currentView = MealsView(meals: []);
+      currentView = MealsView(
+        meals: favouriteMeals,
+        isToggledFavourite: toggledFavouriteStatues,
+      );
       currentTitle = ' Favourites';
     }
     return Scaffold(
