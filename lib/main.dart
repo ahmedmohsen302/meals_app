@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meals_app/constants.dart';
 import 'package:meals_app/views/tabs_view.dart';
@@ -22,7 +23,7 @@ void main() {
         colorScheme: kColorScheme,
         textTheme: GoogleFonts.latoTextTheme(),
       ),
-      home: MealsApp(),
+      home: ProviderScope(child: MealsApp()),
     ),
   );
 }
