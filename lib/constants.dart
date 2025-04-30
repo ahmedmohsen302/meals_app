@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meals_app/views/filters_view.dart';
+import 'package:meals_app/providers/flters_provider.dart';
 
 final kColorScheme = ColorScheme.fromSeed(
   seedColor: const Color(0xFF37064A),
