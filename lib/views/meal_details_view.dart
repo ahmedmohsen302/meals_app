@@ -29,8 +29,18 @@ class MealDetailsView extends ConsumerWidget {
                 ),
               );
             },
-            icon: Icon(
-              isFavourite ? Icons.favorite_outlined : Icons.favorite_outline,
+            icon: AnimatedSwitcher(
+              duration: Duration(milliseconds: 500),
+              transitionBuilder: (child, animation) {
+                return RotationTransition(
+                  turns: Tween<double>(begin: 0.5, end: 1).animate(animation),
+                  child: child,
+                );
+              },
+              child: Icon(
+                isFavourite ? Icons.favorite_outlined : Icons.favorite_outline,
+                key: ValueKey(isFavourite),
+              ),
             ),
           ),
         ],
@@ -39,11 +49,14 @@ class MealDetailsView extends ConsumerWidget {
         physics: BouncingScrollPhysics(),
         child: Column(
           children: [
-            Image.network(
-              meal.imageUrl,
-              fit: BoxFit.cover,
-              height: 300,
-              width: double.infinity,
+            Hero(
+              tag: meal.id,
+              child: Image.network(
+                meal.imageUrl,
+                fit: BoxFit.cover,
+                height: 300,
+                width: double.infinity,
+              ),
             ),
             SizedBox(height: 14),
             Text(
