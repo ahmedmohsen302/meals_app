@@ -6,19 +6,13 @@ import 'package:meals_app/views/meals_view.dart';
 import 'package:meals_app/widgets/category_item.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({
-    super.key,
-    required this.isToggledFavourite,
-    required this.availableMeals,
-  });
-  final void Function(MealsModel meal) isToggledFavourite;
+  const HomeView({super.key, required this.availableMeals});
   final List<MealsModel> availableMeals;
   void selectCategory(BuildContext context, CategoryModel category) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder:
             (context) => MealsView(
-              isToggledFavourite: isToggledFavourite,
               title: category.title,
               meals:
                   availableMeals

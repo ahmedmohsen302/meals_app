@@ -1,44 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/constants.dart';
 import 'package:meals_app/data/dummy_meal_data.dart';
 import 'package:meals_app/models/meals_model.dart';
+import 'package:meals_app/providers/favourite_meals_provider.dart';
 import 'package:meals_app/views/filters_view.dart';
 import 'package:meals_app/views/home_view.dart';
 import 'package:meals_app/views/meals_view.dart';
 import 'package:meals_app/widgets/drawer.dart';
 
-class TabsView extends StatefulWidget {
+class TabsView extends ConsumerStatefulWidget {
   const TabsView({super.key});
 
   @override
-  State<TabsView> createState() => _TabsViewState();
+  ConsumerState<TabsView> createState() => _TabsViewState();
 }
 
-class _TabsViewState extends State<TabsView> {
+class _TabsViewState extends ConsumerState<TabsView> {
   int currentIndex = 0;
-  final List<MealsModel> favouriteMeals = [];
   Map<Filter, bool> selectedFilters = kInitialFilters;
-
-  void toggledFavouriteStatues(MealsModel meal) {
-    final isExisting = favouriteMeals.contains(meal);
-    if (isExisting) {
-      setState(() {
-        favouriteMeals.remove(meal);
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Meal no longer favourite')));
-      });
-    } else {
-      setState(() {
-        favouriteMeals.add(meal);
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Meal added to favourites')));
-      });
-    }
-  }
 
   void selectView(int index) {
     setState(() {
@@ -80,16 +60,11 @@ class _TabsViewState extends State<TabsView> {
           }
           return true;
         }).toList();
-    Widget currentView = HomeView(
-      isToggledFavourite: toggledFavouriteStatues,
-      availableMeals: availableMeals,
-    );
+    Widget currentView = HomeView(availableMeals: availableMeals);
     String currentTitle = 'Categories';
     if (currentIndex == 1) {
-      currentView = MealsView(
-        meals: favouriteMeals,
-        isToggledFavourite: toggledFavouriteStatues,
-      );
+      final favouriteMeals = ref.watch(favouriteMealsProvider);
+      currentView = MealsView(meals: favouriteMeals);
       currentTitle = ' Favourites';
     }
     return Scaffold(

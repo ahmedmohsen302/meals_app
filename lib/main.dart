@@ -7,23 +7,25 @@ import 'package:meals_app/views/tabs_view.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: kColorScheme.surfaceContainer,
-        appBarTheme: AppBarTheme().copyWith(
-          centerTitle: true,
-          color: kColorScheme.onPrimary,
-          titleTextStyle: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-            color: kColorScheme.onPrimaryContainer,
+    ProviderScope(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: kColorScheme.surfaceContainer,
+          appBarTheme: AppBarTheme().copyWith(
+            centerTitle: true,
+            color: kColorScheme.onPrimary,
+            titleTextStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+              color: kColorScheme.onPrimaryContainer,
+            ),
           ),
+          colorScheme: kColorScheme,
+          textTheme: GoogleFonts.latoTextTheme(),
         ),
-        colorScheme: kColorScheme,
-        textTheme: GoogleFonts.latoTextTheme(),
+        home: MealsApp(),
       ),
-      home: ProviderScope(child: MealsApp()),
     ),
   );
 }
