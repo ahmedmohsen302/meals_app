@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:meals_app/constants.dart';
-import 'package:meals_app/data/dummy_meal_data.dart';
 import 'package:meals_app/providers/favourite_meals_provider.dart';
 import 'package:meals_app/providers/flters_provider.dart';
 import 'package:meals_app/views/filters_view.dart';
@@ -18,7 +16,6 @@ class TabsView extends ConsumerStatefulWidget {
 
 class _TabsViewState extends ConsumerState<TabsView> {
   int currentIndex = 0;
-  Map<Filter, bool> selectedFilters = kInitialFilters;
 
   void selectView(int index) {
     setState(() {
@@ -29,14 +26,9 @@ class _TabsViewState extends ConsumerState<TabsView> {
   void onSelect(String idintefier) async {
     if (idintefier == 'Filters') {
       Navigator.of(context).pop();
-      final result = await Navigator.of(context).push<Map<Filter, bool>>(
-        MaterialPageRoute(
-          builder: (context) => FiltersView(currentFilters: selectedFilters),
-        ),
+      await Navigator.of(context).push<Map<Filter, bool>>(
+        MaterialPageRoute(builder: (context) => FiltersView()),
       );
-      setState(() {
-        selectedFilters = result ?? kInitialFilters;
-      });
     } else if (idintefier == 'Meals') {
       Navigator.of(context).pop();
     }
@@ -44,22 +36,8 @@ class _TabsViewState extends ConsumerState<TabsView> {
 
   @override
   Widget build(BuildContext context) {
-    final availableMeals =
-        dummyMeals.where((meal) {
-          if (selectedFilters[Filter.glutenFree]! && meal.isGlutenFree) {
-            return false;
-          }
-          if (selectedFilters[Filter.lactoseFree]! && meal.isLactoseFree) {
-            return false;
-          }
-          if (selectedFilters[Filter.vageterian]! && meal.isVegetarian) {
-            return false;
-          }
-          if (selectedFilters[Filter.vegan]! && meal.isVegan) {
-            return false;
-          }
-          return true;
-        }).toList();
+    final availableMeals = ref.watch(filteredMealsProvider);
+
     Widget currentView = HomeView(availableMeals: availableMeals);
     String currentTitle = 'Categories';
     if (currentIndex == 1) {
